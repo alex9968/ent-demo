@@ -9,6 +9,7 @@ import (
 	"ent-demo/ent"
 	"ent-demo/ent/car"
 	"ent-demo/ent/group"
+	"ent-demo/ent/migrate"
 	"ent-demo/ent/user"
 	// init mysql driver
 	_ "github.com/go-sql-driver/mysql"
@@ -22,16 +23,12 @@ func init() {
 	if err != nil {
 		log.Fatalf("failed opening connection to sqlite: %v", err)
 	}
-	// err = client.Schema.Create(
-	// 	context.Background(),
-	// 	migrate.WithDropIndex(true),
-	// 	migrate.WithDropColumn(true),
-	// )
-	// if err != nil {
-	// 	log.Fatalf("failed creating schema resources: %v", err)
-	// }
-	// Run the auto migration tool.
-	if err := client.Schema.Create(context.Background()); err != nil {
+	err = client.Schema.Create(
+		context.Background(),
+		migrate.WithDropIndex(true),
+		migrate.WithDropColumn(true),
+	)
+	if err != nil {
 		log.Fatalf("failed creating schema resources: %v", err)
 	}
 }
